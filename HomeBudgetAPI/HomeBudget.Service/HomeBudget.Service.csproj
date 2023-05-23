@@ -16,4 +16,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Actions\" />
+    <Folder Include="ModelsDTO\" />
+  </ItemGroup>
+
 </Project>

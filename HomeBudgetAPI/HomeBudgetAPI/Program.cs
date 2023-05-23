@@ -1,5 +1,4 @@
 using HomeBudget.Core;
-using HomeBudget.Service.ModelsDTO.WeatherForecastModels;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
