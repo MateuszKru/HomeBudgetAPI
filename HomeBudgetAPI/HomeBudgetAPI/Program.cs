@@ -1,4 +1,6 @@
+using HomeBudget.Core;
 using HomeBudget.Service.ModelsDTO.WeatherForecastModels;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(cfg => {
     cfg.RegisterServicesFromAssemblies(Assembly.Load("HomeBudgetAPI"), Assembly.Load("HomeBudget.Service"));
 });
+builder.Services.AddDbContext<HomeBudgetDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("HomeBudgetDbConnection")));
 
 
 var app = builder.Build();

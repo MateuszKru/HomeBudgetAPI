@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HomeBudget.Core\HomeBudget.Core.csproj" />
     <ProjectReference Include="..\HomeBudget.Service\HomeBudget.Service.csproj" />
   </ItemGroup>
 
