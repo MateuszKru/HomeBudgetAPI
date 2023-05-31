@@ -16,7 +16,7 @@ namespace HomeBudgetAPI.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet(Name = "GetAllBudgetsList")]
+        [HttpGet("GetAllBudgetsList")]
         public async Task<List<BudgetDTO>> GetAllBudgetsList()
         {
             return await _mediator.Send(new GetAllBudgetsListQuery());
