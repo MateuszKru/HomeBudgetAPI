@@ -16,6 +16,6 @@ namespace HomeBudget.Service.ModelsDTO.BudgetModels
         public decimal RetirementInvestments { get; set; }
         public decimal Savings { get; set; }
         public decimal EntertainmentFund { get; set; }
-        public string BugdetMonth { get; set; } = string.Empty;
+        public string BugdetMonth { get; set; }
     }
 }

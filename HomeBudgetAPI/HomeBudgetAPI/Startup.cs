@@ -22,10 +22,18 @@ namespace HomeBudgetAPI
             {
                 cfg.RegisterServicesFromAssemblies(Assembly.Load("HomeBudgetAPI"), Assembly.Load("HomeBudget.Service"));
             });
-            services.AddDbContext<HomeBudgetDbContext>(options => options.UseSqlServer(_configuration.GetConnectionString("HomeBudgetDbConnection")));
+
+            services.AddDbContext<HomeBudgetDbContext>(options =>
+                options.UseSqlServer(_configuration.GetSection("ConnectionStrings")["HomeBudgetDbConnection"]));
+
+            services.AddScoped<HomeBudgetDbContextSeeder>();
         }
         public void Configure(WebApplication app)
         {
+            var scope = app.Services.CreateScope();
+            var seeder = scope.ServiceProvider.GetRequiredService<HomeBudgetDbContextSeeder>();
+            seeder.Seed();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
