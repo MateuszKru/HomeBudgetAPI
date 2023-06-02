@@ -31,7 +31,6 @@ namespace HomeBudget.Core
                 _dbContext.AddRange(bugdets);
                 _dbContext.SaveChanges();
             }
-
         }
         private IEnumerable<Budget> GetSampleBudgets()
         {

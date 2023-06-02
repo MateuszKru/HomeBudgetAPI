@@ -1,4 +1,5 @@
 ﻿using HomeBudget.Core;
+using HomeBudgetAPI.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -17,6 +18,7 @@ namespace HomeBudgetAPI
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
             services.AddAutoMapper(Assembly.Load("HomeBudget.Service"), Assembly.Load("HomeBudget.Core"));
             services.AddMediatR(cfg =>
             {
@@ -25,8 +27,9 @@ namespace HomeBudgetAPI
 
             services.AddDbContext<HomeBudgetDbContext>(options =>
                 options.UseSqlServer(_configuration.GetSection("ConnectionStrings")["HomeBudgetDbConnection"]));
-
             services.AddScoped<HomeBudgetDbContextSeeder>();
+
+            services.AddScoped<ErrorHandlingMiddleware>();
         }
         public void Configure(WebApplication app)
         {
@@ -39,6 +42,8 @@ namespace HomeBudgetAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 
