@@ -30,6 +30,7 @@ namespace HomeBudgetAPI
             services.AddScoped<HomeBudgetDbContextSeeder>();
 
             services.AddScoped<ErrorHandlingMiddleware>();
+            services.AddScoped<RequestTimeMiddleware>();
         }
         public void Configure(WebApplication app)
         {
@@ -44,6 +45,7 @@ namespace HomeBudgetAPI
             }
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<RequestTimeMiddleware>();
 
             app.UseHttpsRedirection();
 

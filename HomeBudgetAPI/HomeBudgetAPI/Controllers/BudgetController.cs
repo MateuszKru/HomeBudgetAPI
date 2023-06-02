@@ -17,9 +17,10 @@ namespace HomeBudgetAPI.Controllers
         }
 
         [HttpGet("GetAllBudgetsList")]
-        public async Task<List<BudgetDTO>> GetAllBudgetsList()
+        public async Task<ActionResult> GetAllBudgetsList()
         {
-            return await _mediator.Send(new GetAllBudgetsListQuery());
+            var response = await _mediator.Send(new GetAllBudgetsListQuery());
+            return Ok(response) ;
         }
     }
 }
