@@ -1,6 +1,9 @@
 ﻿using HomeBudget.Core;
+using HomeBudget.Core.Entities;
 using HomeBudgetAPI.Middlewares;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace HomeBudgetAPI
@@ -29,6 +32,9 @@ namespace HomeBudgetAPI
                 options.UseSqlServer(_configuration.GetSection("ConnectionStrings")["HomeBudgetDbConnection"]));
             services.AddScoped<HomeBudgetDbContextSeeder>();
 
+            services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
+      .AddEntityFrameworkStores<HomeBudgetDbContext>();
+
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
         }
@@ -49,6 +55,7 @@ namespace HomeBudgetAPI
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
