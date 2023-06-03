@@ -16,6 +16,7 @@ namespace HomeBudgetAPI
         {
             _configuration = configuration;
         }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -32,17 +33,18 @@ namespace HomeBudgetAPI
                 options.UseSqlServer(_configuration.GetSection("ConnectionStrings")["HomeBudgetDbConnection"]));
             services.AddScoped<HomeBudgetDbContextSeeder>();
 
-            services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
-      .AddEntityFrameworkStores<HomeBudgetDbContext>();
+            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<HomeBudgetDbContext>();
 
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
         }
-        public void Configure(WebApplication app)
+
+        public async Task Configure(WebApplication app)
         {
             var scope = app.Services.CreateScope();
             var seeder = scope.ServiceProvider.GetRequiredService<HomeBudgetDbContextSeeder>();
-            seeder.Seed();
+            await seeder.SeedAsync();
 
             if (app.Environment.IsDevelopment())
             {
