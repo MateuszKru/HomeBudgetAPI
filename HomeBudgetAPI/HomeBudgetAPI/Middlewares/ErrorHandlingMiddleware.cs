@@ -8,13 +8,14 @@
         {
             _logger = logger;
         }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             try
             {
                 await next.Invoke(context);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _logger.LogError(e, e.Message);
 

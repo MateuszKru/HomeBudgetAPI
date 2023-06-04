@@ -12,6 +12,7 @@ namespace HomeBudgetAPI.Middlewares
             _logger = logger;
             _stopWatch = Stopwatch.StartNew();
         }
+
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             _stopWatch.Start();

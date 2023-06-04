@@ -3,7 +3,6 @@ using HomeBudget.Core.Entities;
 using HomeBudgetAPI.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace HomeBudgetAPI

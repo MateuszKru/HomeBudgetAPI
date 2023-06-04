@@ -3,11 +3,6 @@ using HomeBudget.Core;
 using HomeBudget.Service.ModelsDTO.BudgetModels;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HomeBudget.Service.Actions.BudgetActions.GetAllBudgetsList
 {
@@ -21,6 +16,7 @@ namespace HomeBudget.Service.Actions.BudgetActions.GetAllBudgetsList
             _dbContext = dbContext;
             _mapper = mapper;
         }
+
         public async Task<List<BudgetDTO>> Handle(GetAllBudgetsListQuery request, CancellationToken cancellationToken)
         {
             var budgetList = await _dbContext.Budgets.Select(x => _mapper.Map<BudgetDTO>(x)).ToListAsync(cancellationToken: cancellationToken);

@@ -1,12 +1,10 @@
-﻿using Azure.Core;
-using HomeBudget.Core.Entities;
+﻿using HomeBudget.Core.Entities;
 using HomeBudget.Core.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Globalization;
 
 namespace HomeBudget.Core

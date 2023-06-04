@@ -1,5 +1,4 @@
 ﻿using HomeBudget.Service.Actions.BudgetActions.GetAllBudgetsList;
-using HomeBudget.Service.ModelsDTO.BudgetModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +19,7 @@ namespace HomeBudgetAPI.Controllers
         public async Task<ActionResult> GetAllBudgetsList()
         {
             var response = await _mediator.Send(new GetAllBudgetsListQuery());
-            return Ok(response) ;
+            return Ok(response);
         }
     }
 }
