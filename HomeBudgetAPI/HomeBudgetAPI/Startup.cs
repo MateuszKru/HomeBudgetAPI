@@ -32,9 +32,6 @@ namespace HomeBudgetAPI
                 options.UseSqlServer(_configuration.GetSection("ConnectionStrings")["HomeBudgetDbConnection"]));
             services.AddScoped<HomeBudgetDbContextSeeder>();
 
-            services.AddIdentity<User, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<HomeBudgetDbContext>();
-
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
         }

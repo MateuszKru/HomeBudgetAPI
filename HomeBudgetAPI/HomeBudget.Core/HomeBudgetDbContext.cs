@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace HomeBudget.Core
 {
-    public class HomeBudgetDbContext : IdentityDbContext<User>
+    public class HomeBudgetDbContext : DbContext
     {
         public HomeBudgetDbContext(DbContextOptions<HomeBudgetDbContext> options) : base(options)
         {
@@ -15,13 +15,6 @@ namespace HomeBudget.Core
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            var entityTypes = modelBuilder.Model.GetEntityTypes();
-            foreach (var entityType in entityTypes)
-                modelBuilder.Entity(entityType.ClrType)
-                       .ToTable(entityType.GetTableName().Replace("AspNet", ""));
-
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
