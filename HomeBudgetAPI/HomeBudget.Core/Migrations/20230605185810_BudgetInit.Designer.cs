@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HomeBudget.Core.Migrations
 {
     [DbContext(typeof(HomeBudgetDbContext))]
-    [Migration("20230523175651_BudgetInit")]
+    [Migration("20230605185810_BudgetInit")]
     partial class BudgetInit
     {
         /// <inheritdoc />
