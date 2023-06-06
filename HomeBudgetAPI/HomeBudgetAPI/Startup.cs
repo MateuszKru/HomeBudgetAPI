@@ -9,6 +9,12 @@ namespace HomeBudgetAPI
 {
     public class Startup
     {
+        private const string _APIAssembly = "HomeBudgetAPI";
+        private const string _serviceAssembly = "HomeBudget.Service";
+        private const string _coreAssembly = "HomeBudget.Core";
+        private const string _ConnectionStrings = "ConnectionStrings";
+        private const string _dbConnection = "HomeBudgetDbConnection";
+
         private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
@@ -22,18 +28,19 @@ namespace HomeBudgetAPI
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            services.AddAutoMapper(Assembly.Load("HomeBudget.Service"), Assembly.Load("HomeBudget.Core"));
+            services.AddAutoMapper(Assembly.Load(_serviceAssembly), Assembly.Load(_coreAssembly));
             services.AddMediatR(cfg =>
             {
-                cfg.RegisterServicesFromAssemblies(Assembly.Load("HomeBudgetAPI"), Assembly.Load("HomeBudget.Service"));
+                cfg.RegisterServicesFromAssemblies(Assembly.Load(_APIAssembly), Assembly.Load(_serviceAssembly));
             });
 
             services.AddDbContext<HomeBudgetDbContext>(options =>
-                options.UseSqlServer(_configuration.GetSection("ConnectionStrings")["HomeBudgetDbConnection"]));
+                options.UseSqlServer(_configuration.GetSection(_ConnectionStrings)[_dbConnection]));
             services.AddScoped<HomeBudgetDbContextSeeder>();
 
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
+            services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         }
 
         public async Task Configure(WebApplication app)

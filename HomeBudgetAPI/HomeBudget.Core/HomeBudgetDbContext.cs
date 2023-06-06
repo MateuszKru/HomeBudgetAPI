@@ -1,5 +1,4 @@
 ﻿using HomeBudget.Core.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -12,6 +11,8 @@ namespace HomeBudget.Core
         }
 
         public DbSet<Budget> Budgets { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
