@@ -1,5 +1,8 @@
-﻿using HomeBudget.Core;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using HomeBudget.Core;
 using HomeBudget.Core.Entities;
+using HomeBudget.Service.Services.UserServices;
 using HomeBudgetAPI.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -36,11 +39,16 @@ namespace HomeBudgetAPI
 
             services.AddDbContext<HomeBudgetDbContext>(options =>
                 options.UseSqlServer(_configuration.GetSection(_ConnectionStrings)[_dbConnection]));
+
             services.AddScoped<HomeBudgetDbContextSeeder>();
 
             services.AddScoped<ErrorHandlingMiddleware>();
             services.AddScoped<RequestTimeMiddleware>();
+
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddFluentValidationAutoValidation().AddValidatorsFromAssembly(Assembly.Load(_serviceAssembly));
         }
 
         public async Task Configure(WebApplication app)
