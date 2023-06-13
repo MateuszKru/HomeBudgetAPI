@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeBudgetAPI", "HomeBudget
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeBudget.Service", "HomeBudget.Service\HomeBudget.Service.csproj", "{4BC52F1A-28C3-4C82-A186-CE37043F1CA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeBudget.Core", "HomeBudget.Core\HomeBudget.Core.csproj", "{C1A5083E-9502-4D03-BA46-5058A40C9370}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeBudget.Core", "HomeBudget.Core\HomeBudget.Core.csproj", "{C1A5083E-9502-4D03-BA46-5058A40C9370}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

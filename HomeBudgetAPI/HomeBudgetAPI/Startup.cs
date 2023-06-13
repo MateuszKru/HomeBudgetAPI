@@ -2,11 +2,14 @@
 using FluentValidation.AspNetCore;
 using HomeBudget.Core;
 using HomeBudget.Core.Entities;
+using HomeBudget.Service.Configurations;
 using HomeBudget.Service.Services.UserServices;
 using HomeBudgetAPI.Middlewares;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace HomeBudgetAPI
 {
@@ -27,6 +30,27 @@ namespace HomeBudgetAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var authenticationSettings = new AuthenticationSettings();
+            _configuration.GetSection("Authentication").Bind(authenticationSettings);
+            services.AddSingleton(authenticationSettings);
+
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = "Bearer";
+                option.DefaultScheme = "Bearer";
+                option.DefaultChallengeScheme = "Bearer";
+            }).AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidIssuer = authenticationSettings.JwtIssuer,
+                    ValidAudience = authenticationSettings.JwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey)),
+                };
+            });
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
@@ -66,9 +90,9 @@ namespace HomeBudgetAPI
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseMiddleware<RequestTimeMiddleware>();
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

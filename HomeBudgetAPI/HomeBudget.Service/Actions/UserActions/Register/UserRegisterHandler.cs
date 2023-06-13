@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HomeBudget.Service.Actions.UserActions.Register
 {
-    public class UserRegisterHandler : IRequestHandler<UserRegisterCommand, AppUserDTO>
+    public class UserRegisterHandler : IRequestHandler<UserRegisterCommand, UserDTO>
     {
         private readonly HomeBudgetDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -32,7 +32,7 @@ namespace HomeBudget.Service.Actions.UserActions.Register
             _userService = userService;
         }
 
-        public async Task<AppUserDTO> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
+        public async Task<UserDTO> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
         {
             _logger.LogInformation($"Request register invoked for email: {request.NewUser.Email}");
 
@@ -43,7 +43,7 @@ namespace HomeBudget.Service.Actions.UserActions.Register
             await _dbContext.AddAsync(newUser, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            AppUserDTO appUser = _mapper.Map<AppUserDTO>(newUser);
+            UserDTO appUser = _mapper.Map<UserDTO>(newUser);
 
             _logger.LogInformation($"New user with email {newUser.Email} was added to database");
 

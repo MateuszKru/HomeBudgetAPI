@@ -1,11 +1,13 @@
 ﻿using HomeBudget.Service.Actions.BudgetActions.GetAllBudgetsList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HomeBudgetAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class BudgetController : ControllerBase
     {
         private readonly IMediator _mediator;

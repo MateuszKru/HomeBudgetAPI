@@ -8,5 +8,7 @@ namespace HomeBudget.Service.Services.UserServices
         Role GetRole(UserRoleEnum userRole);
 
         Task<Role> GetRoleAsync(UserRoleEnum userRole);
+
+        string GenerateTokenJWT(User user);
     }
 }

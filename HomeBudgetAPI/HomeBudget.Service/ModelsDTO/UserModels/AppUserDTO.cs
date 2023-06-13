@@ -1,9 +1,7 @@
-namespace HomeBudget.Service.ModelsDTO.UserModels
+﻿namespace HomeBudget.Service.ModelsDTO.UserModels
 {
-    public class AppUserDTO
+    public class AppUserDTO : UserDTO
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
+        public string Token { get; set; }
     }
 }

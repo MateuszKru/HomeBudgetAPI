@@ -1,4 +1,5 @@
-﻿using HomeBudget.Service.Actions.UserActions.Register;
+﻿using HomeBudget.Service.Actions.UserActions.Login;
+using HomeBudget.Service.Actions.UserActions.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,13 @@ namespace HomeBudgetAPI.Controllers
 
         [HttpPost("register")]
         public async Task<ActionResult> Register(UserRegisterCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Login(UserLoginCommand command)
         {
             var response = await _mediator.Send(command);
             return Ok(response);

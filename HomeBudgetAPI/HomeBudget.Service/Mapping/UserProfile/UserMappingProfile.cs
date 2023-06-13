@@ -10,6 +10,8 @@ namespace HomeBudget.Service.Mapping.UserProfile
         {
             CreateMap<NewUserDTO, User>();
 
+            CreateMap<User, UserDTO>();
+
             CreateMap<User, AppUserDTO>();
         }
     }
