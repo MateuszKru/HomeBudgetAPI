@@ -1,4 +1,6 @@
-﻿namespace HomeBudgetAPI.Middlewares
+﻿using HomeBudget.Service.Exceptions;
+
+namespace HomeBudgetAPI.Middlewares
 {
     public class ErrorHandlingMiddleware : IMiddleware
     {
@@ -14,6 +16,12 @@
             try
             {
                 await next.Invoke(context);
+            }
+            catch (RestException re)
+            {
+                _logger.LogError(re, re.Message);
+                context.Response.StatusCode = re.StatusCode;
+                await context.Response.WriteAsync(re.Message);
             }
             catch (Exception e)
             {
