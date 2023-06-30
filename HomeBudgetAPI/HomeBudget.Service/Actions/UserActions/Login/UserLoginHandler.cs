@@ -14,18 +14,15 @@ namespace HomeBudget.Service.Actions.UserActions.Login
     public class UserLoginHandler : IRequestHandler<UserLoginCommand, AppUserDTO>
     {
         private readonly HomeBudgetDbContext _dbContext;
-        private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
         public UserLoginHandler(
             HomeBudgetDbContext dbContext,
-            IPasswordHasher<User> passwordHasher,
             IMapper mapper,
             IUserService userService)
         {
             _dbContext = dbContext;
-            _passwordHasher = passwordHasher;
             _mapper = mapper;
             _userService = userService;
         }
@@ -39,7 +36,7 @@ namespace HomeBudget.Service.Actions.UserActions.Login
             if (user == null)
                 throw new RestException(HttpStatusCode.BadRequest, "Invalid username or password");
 
-            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
+            var result = _userService.VerifyHashedPassword(user, request.Password);
             if (result == PasswordVerificationResult.Failed)
                 throw new RestException(HttpStatusCode.BadRequest, "Invalid username or password");
 

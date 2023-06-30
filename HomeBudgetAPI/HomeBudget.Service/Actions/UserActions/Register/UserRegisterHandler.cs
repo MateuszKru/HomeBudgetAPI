@@ -15,20 +15,17 @@ namespace HomeBudget.Service.Actions.UserActions.Register
         private readonly HomeBudgetDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly ILogger<UserRegisterHandler> _logger;
-        private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IUserService _userService;
 
         public UserRegisterHandler(
             HomeBudgetDbContext dbContext,
             IMapper mapper,
             ILogger<UserRegisterHandler> logger,
-            IPasswordHasher<User> passwordHasher,
             IUserService userService)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _logger = logger;
-            _passwordHasher = passwordHasher;
             _userService = userService;
         }
 
@@ -51,7 +48,7 @@ namespace HomeBudget.Service.Actions.UserActions.Register
         }
 
         private void SetPasswordHash(User user, string password)
-            => user.PasswordHash = _passwordHasher.HashPassword(user, password);
+            => user.PasswordHash = _userService.HashPassword(user, password);
 
         public void SetUserRole(User user, UserRoleEnum userRole)
             => user.Role = _userService.GetRole(userRole);

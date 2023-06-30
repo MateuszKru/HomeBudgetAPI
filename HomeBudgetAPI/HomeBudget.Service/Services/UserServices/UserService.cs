@@ -1,7 +1,9 @@
-﻿using HomeBudget.Core;
+﻿using Azure.Core;
+using HomeBudget.Core;
 using HomeBudget.Core.Entities;
 using HomeBudget.Core.Enums;
 using HomeBudget.Service.Configurations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,11 +16,13 @@ namespace HomeBudget.Service.Services.UserServices
     {
         private readonly HomeBudgetDbContext _dbContext;
         private readonly AuthenticationSettings _authenticationSettings;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserService(HomeBudgetDbContext dbContext, AuthenticationSettings authenticationSettings)
+        public UserService(HomeBudgetDbContext dbContext, AuthenticationSettings authenticationSettings, IPasswordHasher<User> passwordHasher)
         {
             _dbContext = dbContext;
             _authenticationSettings = authenticationSettings;
+            _passwordHasher = passwordHasher;
         }
 
         public Role GetRole(UserRoleEnum userRole)
@@ -50,5 +54,11 @@ namespace HomeBudget.Service.Services.UserServices
 
             return tokenHandler.WriteToken(token);
         }
+
+        public string HashPassword(User user, string password)
+            => _passwordHasher.HashPassword(user, password);
+
+        public PasswordVerificationResult VerifyHashedPassword(User user, string password)
+            => _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
     }
 }
