@@ -7,6 +7,7 @@ using HomeBudget.Service.Services.UserServices;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace HomeBudget.Service.Actions.UserActions.Login
 {
@@ -36,11 +37,11 @@ namespace HomeBudget.Service.Actions.UserActions.Login
                 .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
 
             if (user == null)
-                throw new RestException(StatusCodeEnum.BadRequest, "Invalid username or password");
+                throw new RestException(HttpStatusCode.BadRequest, "Invalid username or password");
 
             var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
             if (result == PasswordVerificationResult.Failed)
-                throw new RestException(StatusCodeEnum.BadRequest, "Invalid username or password");
+                throw new RestException(HttpStatusCode.BadRequest, "Invalid username or password");
 
             AppUserDTO appUser = _mapper.Map<AppUserDTO>(user);
 
