@@ -31,10 +31,13 @@ namespace HomeBudget.Core
 
         public async Task SeedAsync()
         {
-            await CheckMigrations();
-            await CheckUserRoles();
-            await CheckAdminUser();
-            await CheckBudgets();
+            if (_dbContext.Database.IsRelational())
+            {
+                await CheckMigrations();
+                await CheckUserRoles();
+                await CheckAdminUser();
+                await CheckBudgets();
+            }
         }
 
         private async Task CheckMigrations()
