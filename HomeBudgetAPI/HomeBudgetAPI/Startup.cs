@@ -54,6 +54,16 @@ namespace HomeBudgetAPI
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.AddCors(config =>
+            {
+                config.AddPolicy("AppClient", config =>
+                {
+                    config
+                    .WithOrigins(_configuration.GetSection("AllowedOrigins").Value)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
 
             services.AddAutoMapper(Assembly.Load(_serviceAssembly), Assembly.Load(_coreAssembly));
             services.AddMediatR(cfg =>
@@ -77,6 +87,7 @@ namespace HomeBudgetAPI
 
         public async Task Configure(WebApplication app)
         {
+            app.UseCors("AppClient");
             var scope = app.Services.CreateScope();
             var seeder = scope.ServiceProvider.GetRequiredService<HomeBudgetDbContextSeeder>();
             await seeder.SeedAsync();
