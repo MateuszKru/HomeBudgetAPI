@@ -5,7 +5,6 @@ using HomeBudget.Core.Enums;
 using HomeBudget.Service.ModelsDTO.UserModels;
 using HomeBudget.Service.Services.UserServices;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace HomeBudget.Service.Actions.UserActions.Register

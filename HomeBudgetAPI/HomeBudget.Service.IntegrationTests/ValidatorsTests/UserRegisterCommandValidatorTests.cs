@@ -16,7 +16,7 @@ namespace HomeBudget.Service.IntegrationTests.ValidatorsTests
         public UserRegisterCommandValidatorTests()
         {
             var dbContextOptionsBuilder = new DbContextOptionsBuilder<HomeBudgetDbContext>();
-            dbContextOptionsBuilder.UseInMemoryDatabase("HomeBudgetDbTest");
+            dbContextOptionsBuilder.UseInMemoryDatabase("HomeBudgetDbTestRegister");
 
             _dbContext = new HomeBudgetDbContext(dbContextOptionsBuilder.Options);
 
@@ -27,25 +27,28 @@ namespace HomeBudget.Service.IntegrationTests.ValidatorsTests
 
         private void Seed()
         {
-            var users = new List<User>()
+            if (!_dbContext.Users.Any())
             {
-                new User()
+                var users = new List<User>()
                 {
-                    Email = "test1@mail.com",
-                    FirstName = "Piotr",
-                    LastName = "Nowicki",
-                    PasswordHash = "hashedPassword123"
-                },
-                new User()
-                {
-                    Email = "test2@mail.com",
-                    FirstName = "Tomasz",
-                    LastName = "Kowalski",
-                    PasswordHash = "hashedPassword112233"
-                },
-            };
-            _dbContext.Users.AddRange(users);
-            _dbContext.SaveChanges();
+                    new User()
+                    {
+                        Email = "test1@mail.com",
+                        FirstName = "Piotr",
+                        LastName = "Nowicki",
+                        PasswordHash = "hashedPassword123"
+                    },
+                    new User()
+                    {
+                        Email = "test2@mail.com",
+                        FirstName = "Tomasz",
+                        LastName = "Kowalski",
+                        PasswordHash = "hashedPassword112233"
+                    },
+                };
+                _dbContext.Users.AddRange(users);
+                _dbContext.SaveChanges();
+            }
         }
 
         public static IEnumerable<object[]> GetNewUserDTOValidModelList()

@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using HomeBudget.Core.Entities;
+﻿using HomeBudget.Core.Entities;
 using HomeBudget.Core.Enums;
 using Microsoft.AspNetCore.Identity;
 

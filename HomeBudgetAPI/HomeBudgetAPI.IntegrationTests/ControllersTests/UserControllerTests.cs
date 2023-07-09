@@ -1,8 +1,11 @@
 ﻿using FluentAssertions;
 using HomeBudget.Core;
+using HomeBudget.Core.Entities;
+using HomeBudget.Core.Enums;
 using HomeBudget.Service.Actions.UserActions.Login;
 using HomeBudget.Service.Actions.UserActions.Register;
 using HomeBudget.Service.ModelsDTO.UserModels;
+using HomeBudget.Service.Services.UserServices;
 using HomeBudgetAPI.IntegrationTests.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -14,7 +17,9 @@ namespace HomeBudgetAPI.IntegrationTests.ControllersTests
     public class UserControllerTests : IClassFixture<WebApplicationFactory<Startup>>
     {
         private HttpClient _client;
+        private readonly IServiceScopeFactory? _scopefactory;
         private Mock<IRequestHandler<UserLoginCommand, AppUserDTO>> _userLoginServiceMock = new();
+        private readonly HomeBudgetDbContext _dbContext;
 
         public UserControllerTests(WebApplicationFactory<Startup> factory)
         {
@@ -30,10 +35,40 @@ namespace HomeBudgetAPI.IntegrationTests.ControllersTests
 
                         services.AddSingleton(_userLoginServiceMock.Object);
 
-                        services.AddDbContext<HomeBudgetDbContext>(options => options.UseInMemoryDatabase("HomeBudgetDb"));
+                        services.AddDbContext<HomeBudgetDbContext>(options => options.UseInMemoryDatabase("HomeBudgetDbControllerTest"));
                     });
                 })
                 .CreateClient();
+
+            _scopefactory = factory.Services.GetService<IServiceScopeFactory>();
+
+            var dbContextOptionsBuilder = new DbContextOptionsBuilder<HomeBudgetDbContext>();
+            dbContextOptionsBuilder.UseInMemoryDatabase("HomeBudgetDbControllerTest");
+
+            _dbContext = new HomeBudgetDbContext(dbContextOptionsBuilder.Options);
+
+            Seed();
+        }
+
+        private void Seed()
+        {
+            if (!_dbContext.Users.Any())
+            {
+                using var scope = _scopefactory.CreateScope();
+
+                var userService = scope?.ServiceProvider.GetService(typeof(IUserService)) as IUserService;
+                var user = new User()
+                {
+                    Email = "test1@mail.com",
+                    FirstName = "Piotr",
+                    LastName = "Nowicki",
+                    Role = userService.GetRole(UserRoleEnum.User)
+                };
+                user.PasswordHash = userService.HashPassword(user, "hashedPassword123");
+
+                _dbContext.Users.Add(user);
+                _dbContext.SaveChanges();
+            }
         }
 
         #region RegsiterUserTests
@@ -133,7 +168,7 @@ namespace HomeBudgetAPI.IntegrationTests.ControllersTests
             var userLoginCommand = new UserLoginCommand()
             {
                 Email = "test1@mail.com",
-                Password = "password",
+                Password = "hashedPassword123",
             };
 
             var httpContent = userLoginCommand.ToJsonHttpContent();
